@@ -1,31 +1,25 @@
-import { Client, Intents, MessageEmbed } from "discord.js";
+import { Client, Intents } from "discord.js";
 import config from "./config.json" assert { type: "json" };
+import fetchLatestTweet from "./twitterApi";
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-client.once("ready", () => {
-  console.log("ready");
-});
+client.once("ready", () => {console.log("Ready!")});
 
-const exampleEmbed = new MessageEmbed()
-  .setColor('#ff0000')
-  .setTitle('Testing embeds')
-  .setURL('https://www.google.com')
-  .setDescription('I HATE MAIL!')
-  .setImage('https://i.imgur.com/AfFp7pu.png')
-
-fetch('https://api.twitter.com/2/tweets/search/recent?query=from%3Akuroakuma%20has%3media%20#carriercrowbot', {
-  method: 'GET',
-  headers: {
-    'Authorization': `Bearer ${config.twitterBearerToken}`
+client.on('interactionCreate', async ({commandName, reply, isCommand}) => {
+  if(!isCommand()) return;
+  if(commandName === 'link-tweet') {
+    try {
+      const latestTweet = await fetchLatestTweet()
+      const url = latestTweet.entities.urls[0].url
+      const latestTweetIsTagged = latestTweet.entities.hashtags
+        .reduce((prev, current) => prev || current?.tag === 'carriercrowbot', false)
+      if(latestTweetIsTagged) await reply(`${url}`)
+      else await reply('No posts found!')
+    } catch (e) {
+      await reply('There was a problem connecting to twitter, please try again later.')
+    }
   }
-}).then(console.log)
-
-client.on('interactionCreate', async interaction => {
-  if(!interaction.isCommand()) return;
-  const {commandName} = interaction
-  if(commandName === 'ping') await interaction.reply({embeds: [exampleEmbed]})
-  if(commandName === 'server') await interaction.reply(`Server info for: ${interaction.guild.name}\nTotal member count: ${interaction.guild.memberCount}`)
-  if(commandName === 'user') await interaction.reply(`User info for: ${interaction.user.tag}\n id: ${interaction.user.id}`)
+  if(commandName === 'ping') await reply('Pong!')
 })
 
 client.login(config.token);

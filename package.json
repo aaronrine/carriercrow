@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --experimental-fetch ."
+    "start": "node --experimental-fetch .",
+    "deployCmd": "node deploy-commands.js"
   },
   "author": "Aaron Rine",
   "license": "ISC",

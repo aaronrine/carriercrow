@@ -8,13 +8,10 @@ const {clientId, guildId, token} = config
 const commands = [
   new SlashCommandBuilder()
     .setName("ping")
-    .setDescription("Replies with pong!"),
+    .setDescription("Pings me to make sure I'm not slacking off."),
   new SlashCommandBuilder()
-    .setName("server")
-    .setDescription("Replies with server info."),
-  new SlashCommandBuilder()
-    .setName("user")
-    .setDescription("Replies with user info."),
+    .setName("link-tweet")
+    .setDescription("Grab the latest tweet from Akuroakuma and embed it here."),
 ].map(command => command.toJSON())
 
 const rest = new REST({version: 9}).setToken(token)
