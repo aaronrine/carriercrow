@@ -1,2 +1,3 @@
-config.json
+process.env.json
+.env
 node_modules

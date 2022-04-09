@@ -1,10 +1,8 @@
-import config from './config.json' assert {type: "json"};
-
 const baseUrl = 'https://api.twitter.com/2/'
 const options = {
   method: 'GET',
   headers: {
-    'Authorization': 'Bearer ' + config.twitterBearerToken
+    'Authorization': 'Bearer ' + process.env.twitterBearerToken
   }
 }
 

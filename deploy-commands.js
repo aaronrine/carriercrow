@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import config from "./config.json" assert { type: "json" };
+import config from "./process.env.json" assert { type: "json" };
 
 const {clientId, guildId, token} = config
 
